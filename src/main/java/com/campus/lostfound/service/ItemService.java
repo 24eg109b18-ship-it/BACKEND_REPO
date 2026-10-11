@@ -164,4 +164,16 @@ public class ItemService {
         if (m.length() > 500) throw new IllegalArgumentException("Keep each message under 500 characters.");
         return m;
     }
+
+    /** The person who posted a report can remove it (for example if it was posted by mistake). */
+    @Transactional
+    public void delete(Long itemId, AppUser user) {
+        Item item = get(itemId);
+        if (!item.getReporter().getId().equals(user.getId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the person who posted this can delete it.");
+        if (item.getStatus() == ItemStatus.CLOSED)
+            throw new IllegalArgumentException("A returned item stays on the board as a record and cannot be deleted.");
+        images.findByItemId(itemId).ifPresent(images::delete);
+        items.delete(item);               // also removes its conversations and messages
+    }
 }

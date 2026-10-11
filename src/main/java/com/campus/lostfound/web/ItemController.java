@@ -89,6 +89,12 @@ public class ItemController {
         return Map.of("status", "ok");
     }
 
+    @DeleteMapping("/items/{id}")
+    public Map<String, String> delete(@PathVariable Long id, Principal principal) {
+        service.delete(id, currentUser(principal));
+        return Map.of("status", "deleted");
+    }
+
     @GetMapping("/me/items")
     public MyItemsDto mine(Principal principal) {
         AppUser me = currentUser(principal);
