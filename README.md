@@ -57,3 +57,6 @@ Send the token as `Authorization: Bearer <token>`.
 5. Settings, Networking, Generate Domain. Open that URL: you should see `{"status":"running"}`. That URL is the frontend's `API_URL`.
 
 Other hosts (Render, Fly, etc.) work the same way with the same variables.
+
+
+
